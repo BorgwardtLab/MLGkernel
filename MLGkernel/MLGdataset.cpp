@@ -29,7 +29,9 @@
 #include "FLGkernel.hpp"
 #include "MatrixOF_ASCII.hpp"
 #include "params.hpp"
+
 #include <string>
+#include <set>
 
 void MLGdataset::condense(const int nlevels, const int leaf_radius){
   assert(nlevels>0);
@@ -125,6 +127,32 @@ void MLGdataset::loadDiscreteFeatures(std::string filename, int numFeatures){
   int label;
   int numGraphs;
   ifs >> numGraphs;
+
+  // Store the position of the stream so that we can roll it back later
+  // on *after* having counted the number of features.
+  auto position = ifs.tellg();
+
+  // Stores the labels that are encountered. Since this is a set, the
+  // label count is guaranteed to be unique.
+  set<int> labels;
+
+  while( ifs ) {
+    ifs >> numVertices; // ignore this for now as we do not need it for counting
+
+    for( int i = 0; i < numVertices; i++ ) {
+      ifs >> label;
+      labels.insert( label );
+    }
+  }
+
+  numFeatures = static_cast<int>( labels.size() );
+
+  // Reset the stream and convert the labels now into their graph
+  // representation.
+
+  ifs.clear();
+  ifs.seekg( position );
+
   while(ifs.good()){
     ifs>>numVertices;
     if(!ifs.good()) break;
