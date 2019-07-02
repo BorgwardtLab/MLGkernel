@@ -61,19 +61,6 @@ string genSaveName(string data, double eta, double gamma, int radius, int levels
   return ss.str();
 }
 
-// These are the number of discrete node labels for each of the benchmark datasets.
-int get_num_features(string features){
-  if(features.find("MUTAG") != string::npos) return 7;
-  if(features.find("PTC") != string::npos) return 22;
-  if(features.find("PROTEINS") != string::npos) return 3;
-  if(features.find("NCI109") != string::npos) return 38;
-  if(features.find("NCI1") != string::npos) return 37;
-
-  cout << "Supplied dataset is not one of the sample datasets! You can manually change this code to use the correct number of discrete features of your dataset." << endl;
-  exit(0);
-  return 0;
-}
-
 void runMLG(Params& p) {
   threadManager.maxthreads = p.num_threads;
   MLGdataset dataset(p.data_path, p.eta, p.gamma, p.grow_or_double);
