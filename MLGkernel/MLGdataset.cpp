@@ -118,10 +118,12 @@ void MLGdataset::loadGraphs(std::string filename){
 
 void MLGdataset::loadDiscreteFeatures( std::string filename ) {
   ifstream ifs(filename);
-  if(ifs.fail()){
+
+  if( !ifs ) {
     cout << "Failed to open " << filename << "." << endl;
-    exit(0);
+    exit( -1 );
   }
+
   int numVertices = 0;
   int graphIndex = 0;
   int label;
@@ -153,16 +155,22 @@ void MLGdataset::loadDiscreteFeatures( std::string filename ) {
   ifs.clear();
   ifs.seekg( position );
 
-  while(ifs.good()){
-    ifs>>numVertices;
-    if(!ifs.good()) break;
-    for(int i=0; i<numVertices; i++){
+  while( ifs ) {
+    ifs >> numVertices;
+
+    if( !ifs )
+      break;
+
+    for( int i = 0; i < numVertices; i++ ) {
       ifs >> label;
+
       graphs[graphIndex]->labels[i] = Cvector::Zero(numFeatures+1);
       graphs[graphIndex]->labels[i](label) = 1;
     }
+
     graphIndex++;
   }
+
   assert(graphs.size() == numGraphs);
   assert(graphIndex == graphs.size());
 }
