@@ -47,7 +47,7 @@ public:
 public:
 
   void loadGraphs(std::string filename);
-  void loadDiscreteFeatures(std::string filename, int numFeatures);
+  void loadDiscreteFeatures(std::string filename);
   void loadFeatures(std::string filename);
   void saveGram(std::string filename);
   void fillGram(double *npmatrix, int rows, int cols);

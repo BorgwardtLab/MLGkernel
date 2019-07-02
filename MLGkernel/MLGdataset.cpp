@@ -116,7 +116,7 @@ void MLGdataset::loadGraphs(std::string filename){
   assert(numGraphs == graphs.size());
 }
 
-void MLGdataset::loadDiscreteFeatures(std::string filename, int numFeatures){
+void MLGdataset::loadDiscreteFeatures( std::string filename ) {
   ifstream ifs(filename);
   if(ifs.fail()){
     cout << "Failed to open " << filename << "." << endl;
@@ -145,11 +145,11 @@ void MLGdataset::loadDiscreteFeatures(std::string filename, int numFeatures){
     }
   }
 
-  numFeatures = static_cast<int>( labels.size() );
+  int numFeatures = static_cast<int>( labels.size() );
+  cout << "Number of features: " << numFeatures << endl;
 
   // Reset the stream and convert the labels now into their graph
   // representation.
-
   ifs.clear();
   ifs.seekg( position );
 

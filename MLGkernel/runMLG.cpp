@@ -83,10 +83,8 @@ void runMLG(Params& p) {
     cout << "Computing degree features" << endl;
     for(auto g: dataset.graphs) g->computeDegreeFeatures(20); // all sample datasets have max degree < 20
   } else {
-    cout << "Computing discrete features" << endl;
-    int num_features = get_num_features(p.features_path);
-    cout << "num features: " << num_features << endl;
-    dataset.loadDiscreteFeatures(p.features_path, num_features);
+    cout << "Loading discrete features" << endl;
+    dataset.loadDiscreteFeatures(p.features_path);
   }
 
   dataset.computeGram(p.levels, p.radius);
