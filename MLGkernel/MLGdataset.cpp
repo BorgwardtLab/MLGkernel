@@ -102,9 +102,16 @@ void MLGdataset::loadGraphs(std::string filename){
   int i=0;
   int n;
   ifs >> numGraphs;
-  while(ifs.good()){
+  
+  graphs.reserve( numGraphs );
+
+  while( ifs ){
     ifs>>n;
-    if(!ifs.good()) break;
+
+    // done with reading; skip!
+    if( !ifs )
+      break;
+
     //cout<<"Reading graph "<<++i<<" (n="<<n<<")"<<endl;
     Cmatrix A(n,n);
     for(int j=0; j<n; j++){
