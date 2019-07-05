@@ -35,10 +35,18 @@ double FLGkernel::operator()(const FLGinstance& x1, const FLGinstance& x2) const
 
   Cvector lambda=(x1.Sinv+x2.Sinv).eigenvalues();
   //double detS=1; for(int i=0; i<lambda.n; i++) detS*=lambda(i); detS=1.0/detS; 
-  double log_detS=0; for(int i=0; i<lambda.n; i++) log_detS-=log(lambda(i)); 
+  double log_detS=0;
+  for(int i=0; i<lambda.n; i++)
+  {
+    if( isfinite( lambda(i) ) )
+      log_detS-=log(lambda(i));
+  }
+
+  auto det_x1 = isfinite( x1.log_detS ) ? x1.log_detS : 0.0;
+  auto det_x2 = isfinite( x2.log_detS ) ? x2.log_detS : 0.0;
 
   //double r=sqrt(detS/sqrt(x1.detS*x2.detS));
-  double logr=(log_detS-0.5*(x1.log_detS+x2.log_detS))/2;
+  double logr=(log_detS-0.5*(det_x1 + det_x2))/2;
   double r=0;
   if(logr<-30){cout<<"Underflow!"<<endl;} 
   else r=exp(logr);
