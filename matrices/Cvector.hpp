@@ -116,8 +116,8 @@ public: // Comparisons
 
 public: // element access 
 
-  FIELD& operator()(const int i){return array[i];}
-  FIELD operator()(const int i) const {return array[i];}
+  FIELD& operator()(const int i){ assert( i < n ); return array[i];}
+  FIELD operator()(const int i) const { assert( i < n ); return array[i];}
 
   void (foreach)(std::function<void(const INDEX, FIELD&)> lambda) {for(int i=0; i<n; i++) lambda(i,array[i]);}
   void (foreach)(std::function<void(const INDEX, const FIELD)> lambda) const {for(int i=0; i<n; i++) lambda(i,array[i]);}
