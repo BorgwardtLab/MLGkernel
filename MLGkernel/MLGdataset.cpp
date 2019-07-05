@@ -31,6 +31,7 @@
 #include "params.hpp"
 
 #include <string>
+#include <unordered_map>
 #include <set>
 
 void MLGdataset::condense(const int nlevels, const int leaf_radius){
@@ -132,7 +133,6 @@ void MLGdataset::loadDiscreteFeatures( std::string filename ) {
   }
 
   int numVertices = 0;
-  int graphIndex = 0;
   int label;
   int numGraphs;
   ifs >> numGraphs;
@@ -157,10 +157,23 @@ void MLGdataset::loadDiscreteFeatures( std::string filename ) {
   int numFeatures = static_cast<int>( labels.size() );
   cout << "Number of features: " << numFeatures << endl;
 
+  // Create a mapping of labels to indices. This makes it possible to
+  // load and handle graphs that have non-contiguous label sequences.
+
+  unordered_map<int, int> label_to_index;
+
+  {
+    int index = 0;
+    for( auto&& label : labels )
+      label_to_index[label] = index++;
+  }
+
   // Reset the stream and convert the labels now into their graph
   // representation.
   ifs.clear();
   ifs.seekg( position );
+
+  int graphIndex = 0;
 
   while( ifs ) {
     ifs >> numVertices;
@@ -172,7 +185,7 @@ void MLGdataset::loadDiscreteFeatures( std::string filename ) {
       ifs >> label;
 
       graphs[graphIndex]->labels[i] = Cvector::Zero(numFeatures+1);
-      graphs[graphIndex]->labels[i](label) = 1;
+      graphs[graphIndex]->labels[i](label_to_index[label]) = 1;
     }
 
     graphIndex++;
