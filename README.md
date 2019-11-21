@@ -9,6 +9,30 @@ R. Kondor, H. Pan, [The Multiscale Graph Laplacian](https://arxiv.org/abs/1603.0
 * [Eigen](http://eigen.tuxfamily.org/index.php)
 
 ## Installation/Setup
+
+### Automated installation using `CMake`
+
+The project is configured to use `CMake` to provide a streamlined installation
+experience. After installing `CMake` and `eigen3` using your favourite package
+manager, the following commands are sufficient to compile the
+executable:
+
+```bash
+$ mkdir build
+$ cd build
+$ cmake ../
+$ make -j4
+```
+
+When using Mac OS X, we recommend the [Homebrew](https://brew.sh)
+package manager for installing the dependencies:
+
+```bash
+$ brew install cmake eigen3
+```
+
+### Manual installation using `make`
+
 Change the EIGENDIR variable Makefile.options to the path to your installation of
 the Eigen library. Run the following command to create the runMLG executable in the MLGkernel directory.
 ```bash
